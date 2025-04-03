@@ -1,11 +1,10 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    kotlin("multiplatform") version "1.9.10"
-}
-
-repositories {
-    mavenCentral()
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
@@ -21,22 +20,33 @@ kotlin {
         }
     }
 
-    sourceSets {
-        val nativeMain by creating {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    jvm {
+        binaries {
+            executable {
+                mainClass.set("MainKt")
             }
         }
-        val macosX64Main by getting {
-            dependsOn(nativeMain)
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(compose.ui)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
+            implementation(libs.kotlinx.coroutines.core)
         }
-        val macosArm64Main by getting {
-            dependsOn(nativeMain)
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
         }
     }
-}
 
-tasks.wrapper {
-    gradleVersion = "8.1.1"
-    distributionType = Wrapper.DistributionType.ALL
+    targets.forEach {
+        it.binaries {
+            executable {
+                entryPoint = "compose.main"
+            }
+        }
+    }
 }

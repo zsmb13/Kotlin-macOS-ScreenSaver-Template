@@ -30,6 +30,11 @@ class KotlinScreenSaver : ScreenSaverView {
         kotlinScreenSaverView.animateOneFrame()
     }
 
+    override func startAnimation() {
+        super.startAnimation()
+        kotlinScreenSaverView.startAnimation()
+    }
+
     override var hasConfigureSheet: Bool {
         kotlinScreenSaverView.configureSheet != nil
     }

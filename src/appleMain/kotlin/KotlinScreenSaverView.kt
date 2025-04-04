@@ -1,8 +1,10 @@
+import appkit.MyAppKitScreenSaverView
 import platform.AppKit.NSWindow
 import platform.Foundation.NSBundle
 import platform.ScreenSaver.ScreenSaverView
 
-fun create(): KotlinScreenSaverView = MyScreenSaverView()
+// Choose implementation here
+fun create(): KotlinScreenSaverView = MyComposeScreenSaverView() // or MyAppKitScreenSaverView()
 
 abstract class KotlinScreenSaverView {
     protected lateinit var view: ScreenSaverView
@@ -20,7 +22,9 @@ abstract class KotlinScreenSaverView {
         this.isPreview = isPreview
     }
 
-    abstract fun animateOneFrame()
+    open fun animateOneFrame() {}
+
+    open fun startAnimation() {}
 
     open val configureSheet: NSWindow? = null
 }

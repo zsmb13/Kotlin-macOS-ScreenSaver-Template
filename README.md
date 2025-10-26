@@ -28,8 +28,8 @@ Run the native app:
 ./gradlew runDebugExecutableMacosArm64
 ```
 
-Run the JVM desktop app:
+Run the JVM desktop app with Compose Hot Reload:
 
 ```
-./gradlew runJvm
+./gradlew hotRunJvm --mainClass "MainKt" --auto
 ```
